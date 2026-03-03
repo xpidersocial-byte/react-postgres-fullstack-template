@@ -15,19 +15,6 @@
 		"binding": "ASSETS",
 		"not_found_handling": "single-page-application"
 	},
-	"d1_databases": [
-		{
-			"binding": "D1",
-			"database_name": "inventory-db",
-			"database_id": "YOUR_D1_DATABASE_ID"
-		}
-	],
-	"kv_namespaces": [
-		{
-			"binding": "KV",
-			"id": "YOUR_KV_NAMESPACE_ID"
-		}
-	],
 	// Hyperdrive binding is optional - if not provided, app will use mock data
 	// To enable Hyperdrive, uncomment and configure properly:
 	/*

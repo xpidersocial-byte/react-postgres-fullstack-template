@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Plus, Search, MessageSquare } from "lucide-react";
 import BookCard from "./BookCard";
 
-function useBooks(filter, sortBy, externalThreads) {
+function useBooks(filter, sortBy, externalThreads, searchQuery) {
 	const [books, setBooks] = useState([]);
 	const [loading, setLoading] = useState(true);
 
@@ -11,6 +11,14 @@ function useBooks(filter, sortBy, externalThreads) {
 		if (externalThreads) {
 			let results = [...externalThreads];
 			if (filter) results = results.filter(b => b.genre === filter);
+			
+			if (searchQuery) {
+				const query = searchQuery.toLowerCase();
+				results = results.filter(b => 
+					b.title.toLowerCase().includes(query) || 
+					b.author.toLowerCase().includes(query)
+				);
+			}
 			
 			// Apply sorting
 			if (sortBy === "title_asc") results.sort((a, b) => a.title.localeCompare(b.title));
@@ -37,11 +45,18 @@ function useBooks(filter, sortBy, externalThreads) {
 
 				const data = await response.json();
 
-				if (!data.books?.length) {
-					console.error("No books data found:", data);
-					setBooks([]);
+				if (data.books) {
+					let results = data.books;
+					if (searchQuery) {
+						const query = searchQuery.toLowerCase();
+						results = results.filter(b => 
+							b.title.toLowerCase().includes(query) || 
+							b.author.toLowerCase().includes(query)
+						);
+					}
+					setBooks(results);
 				} else {
-					setBooks(data.books);
+					setBooks([]);
 				}
 			} catch (error) {
 				console.error("Error loading threads:", error);
@@ -51,7 +66,7 @@ function useBooks(filter, sortBy, externalThreads) {
 		};
 
 		fetchBooks();
-	}, [filter, sortBy, externalThreads]);
+	}, [filter, sortBy, externalThreads, searchQuery]);
 
 	return { books, loading };
 }
@@ -59,7 +74,8 @@ function useBooks(filter, sortBy, externalThreads) {
 function BooksList({ filter, onSelectBook, threads, onOpenNewThread }) {
 	const navigate = useNavigate();
 	const [sortBy, setSortBy] = useState("");
-	const { books, loading } = useBooks(filter, sortBy, threads);
+	const [searchQuery, setSearchQuery] = useState("");
+	const { books, loading } = useBooks(filter, sortBy, threads, searchQuery);
 
 	const handleBookSelect = (bookId) => {
 		onSelectBook ? onSelectBook(bookId) : navigate(`/book/${bookId}`);
@@ -92,19 +108,30 @@ function BooksList({ filter, onSelectBook, threads, onOpenNewThread }) {
 						{books.length} Threads Active
 					</span>
 				</div>
-				<div className="relative w-full sm:w-auto">
-					<select
-						className="w-full sm:w-auto py-3.5 pl-6 pr-12 appearance-none cursor-pointer text-slate-400 text-[11px] font-black uppercase tracking-widest"
-						value={sortBy}
-						onChange={handleSortChange}
-					>
-						<option value="">Latest Activity</option>
-						<option value="title_asc">Title (A-Z)</option>
-						<option value="replies">Most Replies</option>
-						<option value="views">Most Viewed</option>
-					</select>
-					<div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-600">
-						<Search size={14} />
+				<div className="flex gap-4 w-full sm:w-auto">
+					<div className="relative flex-1 sm:w-64">
+						<input 
+							type="text"
+							placeholder="Search intelligence..."
+							value={searchQuery}
+							onChange={(e) => setSearchQuery(e.target.value)}
+							className="w-full py-3.5 pl-6 pr-12 bg-[#0a0a0a] border border-white/[0.05] rounded-2xl text-slate-300 text-xs font-bold outline-none focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 transition-all placeholder:text-slate-700"
+						/>
+						<div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-600">
+							<Search size={14} />
+						</div>
+					</div>
+					<div className="relative">
+						<select
+							className="h-full pl-6 pr-10 appearance-none cursor-pointer bg-[#0a0a0a] border border-white/[0.05] rounded-2xl text-slate-400 text-[10px] font-black uppercase tracking-widest outline-none focus:border-blue-500/50 transition-all"
+							value={sortBy}
+							onChange={handleSortChange}
+						>
+							<option value="">Latest</option>
+							<option value="title_asc">A-Z</option>
+							<option value="replies">Replies</option>
+							<option value="views">Views</option>
+						</select>
 					</div>
 				</div>
 			</div>
