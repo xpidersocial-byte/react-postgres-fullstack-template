@@ -94,4 +94,44 @@ booksRouter.get("/:id", async (c) => {
 	return selectDataSource(c, dbLogic, mockLogic);
 });
 
+// Create a new thread
+booksRouter.post("/", async (c) => {
+	const body = await c.req.json();
+	const { title, author, description, image_url, genre } = body;
+
+	// Database logic
+	const dbLogic = async (c) => {
+		const sql = c.env.SQL;
+		
+		const result = await sql`
+			INSERT INTO public.books (title, author, description, image_url, genre)
+			VALUES (${title}, ${author}, ${description}, ${image_url}, ${genre})
+			RETURNING *
+		`;
+
+		return Response.json({
+			success: true,
+			book: result[0],
+			source: "database"
+		});
+	};
+
+	// Mock logic (for demo when DB is not connected)
+	const mockLogic = async (c) => {
+		// In mock mode, we just return the object as if it was saved
+		// Note: This still won't persist across refreshes without a real DB
+		return Response.json({
+			success: true,
+			book: {
+				...body,
+				id: Date.now(),
+				created_at: new Date().toISOString()
+			},
+			source: "mock"
+		});
+	};
+
+	return selectDataSource(c, dbLogic, mockLogic);
+});
+
 export default booksRouter;
