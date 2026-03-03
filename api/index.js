@@ -4,6 +4,7 @@ import booksRouter from "./routes/books";
 import bookRelatedRouter from "./routes/book-related";
 import authRouter from "./routes/auth";
 import mediaRouter from "./routes/media";
+import storageRouter from "./routes/storage";
 import { mockBooks } from "./lib/mockData";
 
 const app = new Hono();
@@ -55,6 +56,7 @@ app.route("/api/books", booksRouter);
 app.route("/api/books/:id/related", bookRelatedRouter);
 app.route("/api/auth", authRouter);
 app.route("/api/media", mediaRouter);
+app.route("/api/storage", storageRouter);
 
 // Catch-all route for static assets
 app.all("*", async (c) => {

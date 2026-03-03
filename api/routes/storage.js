@@ -14,11 +14,6 @@ storage.get("/status", async (c) => {
 			limit: "1GB",
 			usage: "KV Key-Value store for sessions/caching",
 		},
-		r2: {
-			available: !!c.env.R2,
-			limit: "10GB",
-			usage: "R2 Object Storage for images/files",
-		},
 		hyperdrive: {
 			available: !!c.env.HYPERDRIVE,
 			usage: "Hyperdrive Postgres connection pooler",

@@ -28,12 +28,6 @@
 			"id": "YOUR_KV_NAMESPACE_ID"
 		}
 	],
-	"r2_buckets": [
-		{
-			"binding": "R2",
-			"bucket_name": "app-assets"
-		}
-	],
 	// Hyperdrive binding is optional - if not provided, app will use mock data
 	// To enable Hyperdrive, uncomment and configure properly:
 	/*

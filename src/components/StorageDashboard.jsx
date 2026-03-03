@@ -20,7 +20,6 @@ export default function StorageDashboard() {
 	const storageItems = [
 		{ name: "D1 SQL", ...status.d1, icon: "🗄️" },
 		{ name: "KV Store", ...status.kv, icon: "🔑" },
-		{ name: "R2 Storage", ...status.r2, icon: "📦" },
 		{ name: "Hyperdrive", ...status.hyperdrive, icon: "⚡" },
 	];
 

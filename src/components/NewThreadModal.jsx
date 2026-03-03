@@ -117,7 +117,7 @@ export default function NewThreadModal({ isOpen, onClose, onCreate, genres, acti
 							value={content}
 							onChange={(e) => setContent(e.target.value)}
 							className="w-full px-8 py-6 bg-black/40 border border-white/[0.05] text-slate-300 rounded-[2rem] focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500/40 transition-all placeholder:text-slate-800 text-base font-bold min-h-[220px] resize-none leading-relaxed"
-							placeholder="Compose the primary data transmission..."
+							placeholder="Compose the primary data transmission... (Markdown Supported: **bold**, [link](url), `code`)"
 							required
 						/>
 					</div>
