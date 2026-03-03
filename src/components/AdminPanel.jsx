@@ -23,7 +23,6 @@ import {
   Copy,
   ExternalLink
 } from "lucide-react";
-import StorageDashboard from "./StorageDashboard";
 
 export default function AdminPanel({ user, genres, onAddCategory }) {
 	const navigate = useNavigate();
@@ -62,7 +61,6 @@ export default function AdminPanel({ user, genres, onAddCategory }) {
 		{ id: "categories", label: "Categories", icon: Tag },
 		{ id: "media", label: "Asset Node", icon: ImageIcon },
 		{ id: "users", label: "User Management", icon: Users },
-		{ id: "storage", label: "Infrastructure", icon: Database },
 		{ id: "logs", label: "System Logs", icon: Terminal },
 		{ id: "settings", label: "Settings", icon: Settings },
 	];
@@ -192,11 +190,10 @@ export default function AdminPanel({ user, genres, onAddCategory }) {
 
 				{activeTab === "dashboard" && (
 					<div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
 							<AdminStatCard title="Global Threads" value={stats.totalBooks} icon={Activity} color="text-blue-400" trend="+12.5%" />
 							<AdminStatCard title="Active Sectors" value={stats.totalGenres} icon={Tag} color="text-purple-400" trend="Live" />
 							<AdminStatCard title="Node Health" value={stats.dbStatus} icon={RefreshCw} color="text-emerald-400" trend="100%" />
-							<AdminStatCard title="Kernel Load" value="1.2 MB" icon={Cpu} color="text-amber-400" trend="0.04s" />
 						</div>
 
 						<div className="bg-[#0f0f0f] border border-white/[0.05] rounded-[2.5rem] shadow-2xl overflow-hidden">
@@ -405,16 +402,6 @@ export default function AdminPanel({ user, genres, onAddCategory }) {
                                 )}
 							</div>
 						</div>
-					</div>
-				)}
-
-				{activeTab === "storage" && (
-					<div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-						<header className="mb-10">
-							<h2 className="text-3xl font-black text-white mb-2 tracking-tighter uppercase italic">Infrastructure Overview</h2>
-							<p className="text-gray-600 text-xs font-bold uppercase tracking-widest">Cloudflare Free-Tier Edge Performance Metrics</p>
-						</header>
-						<StorageDashboard />
 					</div>
 				)}
 

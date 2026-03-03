@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import postgres from "postgres";
 import booksRouter from "./routes/books";
 import bookRelatedRouter from "./routes/book-related";
-import storageRouter from "./routes/storage";
 import authRouter from "./routes/auth";
 import mediaRouter from "./routes/media";
 import { mockBooks } from "./lib/mockData";
@@ -54,7 +53,6 @@ app.use("*", async (c, next) => {
 
 app.route("/api/books", booksRouter);
 app.route("/api/books/:id/related", bookRelatedRouter);
-app.route("/api/storage", storageRouter);
 app.route("/api/auth", authRouter);
 app.route("/api/media", mediaRouter);
 
