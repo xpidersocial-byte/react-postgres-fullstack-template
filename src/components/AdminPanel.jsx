@@ -21,10 +21,12 @@ import {
   Upload,
   Link as LinkIcon,
   Copy,
-  ExternalLink
+  ExternalLink,
+  ShieldCheck
 } from "lucide-react";
+import DeploymentScanner from "./DeploymentScanner";
 
-export default function AdminPanel({ user, genres, onAddCategory }) {
+export default function AdminPanel({ user, genres, onAddCategory, theme, setTheme }) {
 	const navigate = useNavigate();
 	const [activeTab, setActiveTab] = useState("dashboard");
 	const [stats, setStats] = useState({
@@ -60,6 +62,7 @@ export default function AdminPanel({ user, genres, onAddCategory }) {
 		{ id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
 		{ id: "categories", label: "Categories", icon: Tag },
 		{ id: "media", label: "Asset Node", icon: ImageIcon },
+		{ id: "deploy", label: "Check Deploy", icon: ShieldCheck },
 		{ id: "users", label: "User Management", icon: Users },
 		{ id: "logs", label: "System Logs", icon: Terminal },
 		{ id: "settings", label: "Settings", icon: Settings },
@@ -315,6 +318,10 @@ export default function AdminPanel({ user, genres, onAddCategory }) {
 							</div>
 						</div>
 					</div>
+				)}
+
+				{activeTab === "deploy" && (
+					<DeploymentScanner />
 				)}
 
 				{activeTab === "media" && (

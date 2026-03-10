@@ -29,5 +29,12 @@
 	"placement": {
 		"mode": "smart"
 	},
+	"d1_databases": [
+		{
+			"binding": "D1",
+			"database_name": "inventory-db",
+			"database_id": "YOUR_D1_DATABASE_ID"
+		}
+	],
 	"upload_source_maps": true
 }

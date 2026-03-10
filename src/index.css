@@ -6,7 +6,7 @@
 	--font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
 	--font-mono: "JetBrains Mono", monospace;
 
-	/* Default Base Variables (Carbon) */
+	/* Carbon & Cobalt Palette */
 	--color-bg-dark: #080808;
 	--color-bg-panel: #0d0d0d;
 	--color-bg-card: #121212;
@@ -18,8 +18,9 @@
 	--color-text-dim: #94a3b8;
 	--color-text-low: #475569;
 
-	--width-sidebar-left: 280px;
-	--width-sidebar-right: 340px;
+	/* 3-Column Geometry - Compact */
+	--width-sidebar-left: 260px;
+	--width-sidebar-right: 300px;
 }
 
 :root {
@@ -58,16 +59,12 @@
 	--accent-border: rgba(245, 158, 11, 0.2);
 }
 
-:root {
-	background-color: var(--bg-dark);
-	color: #f1f5f9;
-	-webkit-font-smoothing: antialiased;
-}
-
 body {
 	background-color: var(--bg-dark);
 	color: #f1f5f9;
 	font-family: var(--font-sans);
+	font-size: 14px; /* Reduced base font size */
+	line-height: 1.5;
 	@apply overflow-x-hidden selection:bg-blue-500/30;
 	transition: background-color 0.5s ease;
 }
@@ -78,47 +75,47 @@ body {
 }
 
 .sidebar-left {
-	@apply fixed top-0 left-0 h-full w-[280px] z-40 transition-all overflow-y-auto border-r border-white/[0.03];
+	@apply fixed top-0 left-0 h-full w-[260px] z-40 transition-all overflow-y-auto border-r border-white/[0.03];
 	background-color: var(--bg-panel);
 }
 
 .sidebar-right {
-	@apply fixed top-0 right-0 h-full w-[340px] z-40 transition-all overflow-y-auto hidden xl:block border-l border-white/[0.03];
+	@apply fixed top-0 right-0 h-full w-[300px] z-40 transition-all overflow-y-auto hidden xl:block border-l border-white/[0.03];
 	background-color: var(--bg-panel);
 }
 
 .main-column {
-	@apply flex-1 ml-[280px] mr-0 xl:mr-[340px] min-h-screen relative z-10;
+	@apply flex-1 ml-[260px] mr-0 xl:mr-[300px] min-h-screen relative z-10;
 	background-color: var(--bg-dark);
 }
 
 .content-gate {
-	@apply max-w-4xl mx-auto px-8 py-12;
+	@apply max-w-4xl mx-auto px-6 py-8; /* Tighter padding */
 }
 
-/* Carbon Component Library */
+/* Carbon Component Library - Refined */
 .carbon-card {
-	@apply border border-white/[0.04] rounded-[2.5rem] transition-all duration-500;
+	@apply border border-white/[0.04] rounded-[1.5rem] transition-all duration-500;
 	background-color: var(--bg-card);
 }
 
 .book-card {
-	@apply border border-white/[0.04] rounded-[2.5rem] overflow-hidden transition-all duration-500 shadow-xl;
+	@apply border border-white/[0.04] rounded-[1.5rem] overflow-hidden transition-all duration-500 shadow-sm hover:shadow-md;
 	background-color: var(--bg-card);
 }
 
 .book-card:hover {
 	border-color: var(--accent-border);
-	box-shadow: 0 0 40px -10px var(--accent-glow);
+	box-shadow: 0 0 30px -10px var(--accent-glow);
 }
 
 .carbon-input {
-	@apply bg-black/40 border border-white/[0.05] text-white rounded-2xl px-6 py-4 outline-none transition-all font-medium placeholder:text-slate-700;
+	@apply bg-black/40 border border-white/[0.05] text-white rounded-xl px-4 py-3 outline-none transition-all font-medium placeholder:text-slate-700 text-sm;
 }
 
 .carbon-input:focus {
 	border-color: var(--accent-border);
-	box-shadow: 0 0 0 4px var(--accent-glow);
+	box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 /* Theme-aware Text and Accents */
@@ -133,10 +130,10 @@ body {
 ::-webkit-scrollbar-thumb { @apply bg-white/5 rounded-full hover:bg-white/10; }
 
 @keyframes slideUpFade {
-	from { opacity: 0; transform: translateY(20px); }
+	from { opacity: 0; transform: translateY(10px); }
 	to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-carbon-up {
-	animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

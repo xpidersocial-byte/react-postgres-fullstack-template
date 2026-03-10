@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, MessageSquare, Send, Type, AlignLeft, Hash, Shield, Zap } from "lucide-react";
 
 export default function NewThreadModal({ isOpen, onClose, onCreate, genres, activeGenre }) {
@@ -6,6 +6,13 @@ export default function NewThreadModal({ isOpen, onClose, onCreate, genres, acti
 	const [content, setContent] = useState("");
 	const [genre, setGenre] = useState(activeGenre || "");
 	const [loading, setLoading] = useState(false);
+
+	// Sync genre state with activeGenre prop when modal opens
+	useEffect(() => {
+		if (isOpen) {
+			setGenre(activeGenre || "");
+		}
+	}, [isOpen, activeGenre]);
 
 	if (!isOpen) return null;
 

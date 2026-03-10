@@ -103,15 +103,18 @@ booksRouter.post("/", async (c) => {
 	const dbLogic = async (c) => {
 		const sql = c.env.SQL;
 		
+		// Use RETURNING id to get the generated ID
 		const result = await sql`
-			INSERT INTO public.books (title, author, description, image_url, genre)
+			INSERT INTO books (title, author, description, image_url, genre)
 			VALUES (${title}, ${author}, ${description}, ${image_url}, ${genre})
-			RETURNING *
+			RETURNING id, title, author, description, image_url, genre, created_at
 		`;
+
+		const newBook = result[0];
 
 		return Response.json({
 			success: true,
-			book: result[0],
+			book: newBook,
 			source: "database"
 		});
 	};

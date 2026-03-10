@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams, Routes, Route, Link, Navigate } from "react-router-dom";
+import { useNavigate, useParams, Routes, Route, Link, Navigate, useMatch } from "react-router-dom";
 import { Shield, LogOut } from "lucide-react";
 import { groupByGenre } from "./lib/utils";
 import Breadcrumbs from "./components/Breadcrumbs";
@@ -15,9 +15,13 @@ import AdminAnnouncement from "./components/AdminAnnouncement";
 import VotingProtocol from "./components/VotingProtocol";
 import NewThreadModal from "./components/NewThreadModal";
 import RightSidebar from "./components/RightSidebar";
+import ProfilePage from "./components/ProfilePage";
 
 function App() {
 	const navigate = useNavigate();
+	const genreMatch = useMatch("/:genreId");
+	const activeGenre = genreMatch?.params?.genreId ? decodeURIComponent(genreMatch.params.genreId) : null;
+	
 	const [user, setUser] = useState(null);
 	const [authChecked, setAuthChecked] = useState(false);
 	const [allThreads, setAllThreads] = useState([]);
@@ -110,6 +114,11 @@ function App() {
 		navigate("/login");
 	};
 
+	const handleUpdateUser = (updatedUser) => {
+		setUser(updatedUser);
+		// In a real app, you would also update the backend here
+	};
+
 	const handleCreateThread = (newThread) => {
 		const updatedThreads = [newThread, ...allThreads];
 		setAllThreads(updatedThreads);
@@ -130,18 +139,18 @@ function App() {
 							Admin Console
 						</Link>
 					)}
-					<div className="hidden lg:flex items-center gap-4 bg-[#111]/80 backdrop-blur-xl p-1.5 pr-6 rounded-2xl border border-white/[0.05] shadow-2xl">
-						<div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-900 text-white rounded-xl flex items-center justify-center font-black text-xs border border-white/10 shadow-inner uppercase">
+					<Link to="/profile" className="hidden lg:flex items-center gap-4 bg-[#111]/80 backdrop-blur-xl p-1.5 pr-6 rounded-2xl border border-white/[0.05] shadow-2xl hover:border-blue-500/30 transition-all group">
+						<div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-900 text-white rounded-xl flex items-center justify-center font-black text-xs border border-white/10 shadow-inner uppercase group-hover:scale-105 transition-transform">
                             {user.name.charAt(0)}
                         </div>
 						<div className="text-left">
-							<div className="text-[11px] font-black text-white uppercase tracking-tight leading-none">{user.name}</div>
+							<div className="text-[11px] font-black text-white uppercase tracking-tight leading-none group-hover:text-blue-400 transition-colors">{user.name}</div>
 							<div className="flex items-center gap-1.5 text-emerald-500 uppercase tracking-widest font-black text-[8px] mt-1">
                                 <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></div>
                                 Online
                             </div>
 						</div>
-					</div>
+					</Link>
 					<button onClick={handleLogout} className="w-10 h-10 flex items-center justify-center bg-[#111]/80 backdrop-blur-xl text-slate-500 hover:text-red-400 rounded-xl border border-white/[0.05] transition-all cursor-pointer hover:bg-red-500/5 hover:border-red-500/20 group">
 						<LogOut size={18} className="group-hover:translate-x-0.5 transition-transform" />
 					</button>
@@ -151,6 +160,7 @@ function App() {
 			<Routes>
 				<Route path="/login" element={user ? <Navigate to="/" /> : <Login onLoginSuccess={setUser} />} />
 				<Route path="/admin" element={user ? <AdminPanel user={user} genres={genres} onAddCategory={handleSyncCategory} theme={theme} setTheme={setTheme} /> : <Navigate to="/login" replace />} />
+                <Route path="/profile" element={user ? <ProfilePage user={user} onUpdateUser={handleUpdateUser} /> : <Navigate to="/login" replace />} />
 				<Route path="*" element={
 					user ? (
 						<div className="layout-container">
@@ -178,6 +188,7 @@ function App() {
 								onClose={() => setIsNewThreadModalOpen(false)} 
 								onCreate={handleCreateThread}
 								genres={genres}
+								activeGenre={activeGenre}
 							/>
 						</div>
 					) : <Navigate to="/login" replace />
